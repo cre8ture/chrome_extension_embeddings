@@ -1,6 +1,10 @@
 // background.js - Handles requests from the UI, runs the model, then sends back a response
 
 import { pipeline, env } from '@xenova/transformers';
+import { VectorStorage } from './vectorDB.js';
+
+// Create an instance of VectorStorage
+const vectorStorage = new VectorStorage();
 
 // Skip initial check for local models, since we are not loading any local models.
 env.allowLocalModels = false;
@@ -58,7 +62,14 @@ const embed = async (text) => {
       self.sentences = sentences;
       self.embeddings = embeddings.map((output) => Array.from(output.data));
 
-      console.log(self.embeddings)
+          // Save each sentence and its embedding to the vector storage
+    self.sentences.forEach((sentence, index) => {
+        vectorStorage.addVector(
+          sentence,
+          self.embeddings[index],
+          "embeddingModel"
+        );
+      });
   
 
     // Actually run the model on the input text

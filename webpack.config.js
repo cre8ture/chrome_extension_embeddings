@@ -14,6 +14,7 @@ const config = {
         background: './src/background.js',
         popup: './src/popup.js',
         content: './src/content.js',
+        editDocuments: './src/editDocuments.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -24,6 +25,10 @@ const config = {
             template: './src/popup.html',
             filename: 'popup.html',
         }),
+        new HtmlWebpackPlugin({
+            template: './src/editDocuments.html',
+            filename: 'editDocuments.html',
+        }),
         new CopyPlugin({
             patterns: [
                 {
@@ -33,6 +38,10 @@ const config = {
                 {
                     from: "src/popup.css",
                     to: "popup.css"
+                },
+                {
+                    from: "src/editDocuments.css",
+                    to: "editDocuments.css"
                 }
             ],
         })
